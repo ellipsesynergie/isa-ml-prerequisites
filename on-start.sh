@@ -36,8 +36,7 @@ fi
 
 echo "Found boto3 at $PYTHON_DIR"
 
-
-echo "Starting the SageMaker autostop script in cron"
+sudo -u ec2-user -i <<'EOF'
 
 echo "Fetching poetry.lock and pyproject.toml files"
 wget https://raw.githubusercontent.com/ellipsesynergie/isa-ml-prerequisites/main/poetry.lock
@@ -47,10 +46,7 @@ wget https://raw.githubusercontent.com/ellipsesynergie/isa-ml-prerequisites/main
 curl -sSL https://install.python-poetry.org | python3 -
 
 # Add Poetry to PATH
-export PATH="/root/.local/bin:$PATH"
-
-# Add to ec2-user path
-echo -e "PATH=\$PATH:/root/.local/bin\nexport PATH" >> /home/ec2-user/.bash_profile
+export PATH="/home/ec2-user/.local/bin:$PATH"
 
 # Create Virtual env with Poetry using preinstalled python 3.8
 poetry env use /home/ec2-user/anaconda3/envs/python3/bin/python
@@ -61,4 +57,7 @@ poetry install
 # Create Kernel for ipython notebook
 poetry run ipython kernel install --name "poetry-python3.8" --user
 
+EOF
+
+echo "Starting the SageMaker autostop script in cron"
 (crontab -l 2>/dev/null; echo "*/5 * * * * $PYTHON_DIR $PWD/autostop.py --time $IDLE_TIME --ignore-connections >> /var/log/jupyter.log") | crontab
