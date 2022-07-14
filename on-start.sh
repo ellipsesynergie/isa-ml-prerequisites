@@ -50,7 +50,7 @@ curl -sSL https://install.python-poetry.org | python3 -
 export PATH="/root/.local/bin:$PATH"
 
 # Create Virtual env with Poetry using preinstalled python 3.8
-poetry env use /root/.local/anaconda3/envs/python3/bin/python
+poetry env use /home/ec2-user/anaconda3/envs/python3/bin/python
 
 # Install all dependencies
 poetry install
