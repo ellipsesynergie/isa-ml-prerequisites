@@ -49,6 +49,9 @@ curl -sSL https://install.python-poetry.org | python3 -
 # Add Poetry to PATH
 export PATH="/root/.local/bin:$PATH"
 
+# Add to ec2-user path
+echo -e "PATH=\$PATH:/root/.local/bin\nexport PATH" >> /home/ec2-user/.bash_profile
+
 # Create Virtual env with Poetry using preinstalled python 3.8
 poetry env use /home/ec2-user/anaconda3/envs/python3/bin/python
 
