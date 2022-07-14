@@ -40,6 +40,25 @@ echo "Found boto3 at $PYTHON_DIR"
 echo "Starting the SageMaker autostop script in cron"
 
 echo "Fetching poetry.lock and pyproject.toml files"
-#wget https://raw.githubusercontent.com/aws-samples/amazon-sagemaker-notebook-instance-lifecycle-config-samples/master/scripts/auto-stop-idle/autostop.py
+wget https://raw.githubusercontent.com/ellipsesynergie/isa-ml-prerequisites/main/poetry.lock
+wget https://raw.githubusercontent.com/ellipsesynergie/isa-ml-prerequisites/main/pyproject.toml
+
+# Install Poetry dependency manager
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Add Poetry to PATH
+export PATH="/home/ec2-user/.local/bin:$PATH"
+
+# Switch to project
+cd SageMaker/isa-ml/
+
+# Create Virtual env with Poetry using preinstalled python 3.8
+poetry env use /home/ec2-user/anaconda3/envs/python3/bin/python
+
+# Install all dependencies
+poetry install
+
+# Create Kernel for ipython notebook
+poetry run ipython kernel install --name "poetry-python3.8" --user
 
 (crontab -l 2>/dev/null; echo "*/5 * * * * $PYTHON_DIR $PWD/autostop.py --time $IDLE_TIME --ignore-connections >> /var/log/jupyter.log") | crontab
