@@ -47,13 +47,10 @@ wget https://raw.githubusercontent.com/ellipsesynergie/isa-ml-prerequisites/main
 curl -sSL https://install.python-poetry.org | python3 -
 
 # Add Poetry to PATH
-export PATH="/home/ec2-user/.local/bin:$PATH"
-
-# Switch to project
-cd SageMaker/isa-ml/
+export PATH="/root/.local/bin:$PATH"
 
 # Create Virtual env with Poetry using preinstalled python 3.8
-poetry env use /home/ec2-user/anaconda3/envs/python3/bin/python
+poetry env use /root/.local/anaconda3/envs/python3/bin/python
 
 # Install all dependencies
 poetry install
